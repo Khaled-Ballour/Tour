@@ -1,11 +1,11 @@
 const dotenv = require('dotenv');
 dotenv.config();
-const connectToDB = require('./utils/DB-connection');
 
+const DB_connection = require('./utils/DB-connection');
 const app = require('./app');
 const port = 3000;
 
-connectToDB().then(() => {
+DB_connection().then(() => {
   app.listen(port, () => {
     console.log(`the server running on port: ${port}...`);
   });

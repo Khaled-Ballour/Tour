@@ -11,8 +11,8 @@ const DB_uri = process.env.DB.replace(
   DB_options
 );
 
-const connectToDB = () => {
+const DB_connection = () => {
   return mongoose.connect(DB_uri);
 };
 
-module.exports = connectToDB;
+module.exports = DB_connection;
