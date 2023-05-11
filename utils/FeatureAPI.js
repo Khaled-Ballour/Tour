@@ -3,16 +3,22 @@ class FeatureAPI {
     this.query = query;
     this.queryString = queryString;
   }
+
   flitter() {
-    const queryObj = { ...this.queryString };
+    this.queryString = this.queryString.replace(
+      /\b(gte|lte|gt|lt)\b/g,
+      (match) => `$${match}`
+    );
+    const queryObj = JSON.parse(this.queryString);
     const options = ['page', 'sort', 'limit', 'fields'];
-    Object.keys(queryObj).forEach((key) => {
-      if (key === 'price' || key === 'ratingsAverage')
-        queryObj[key] = Number(queryObj[key]);
-      if (options.includes(key)) delete queryObj[key];
-    });
+    options.forEach((ele) => delete queryObj[ele]);
     this.query.find(queryObj);
-    console.log(queryObj);
+    return this;
+  }
+
+  sort() {
+    const queryObj = JSON.parse(this.queryString);
+    if (queryObj.sort) this.query.sort(queryObj.sort);
     return this;
   }
 }
