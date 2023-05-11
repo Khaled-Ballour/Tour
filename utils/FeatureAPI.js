@@ -6,7 +6,6 @@ class FeatureAPI {
   flitter() {
     const queryObj = { ...this.queryString };
     const options = ['page', 'sort', 'limit', 'fields'];
-
     Object.keys(queryObj).forEach((key) => {
       if (key === 'price' || key === 'ratingsAverage')
         queryObj[key] = Number(queryObj[key]);
@@ -14,7 +13,7 @@ class FeatureAPI {
     });
     this.query.find(queryObj);
     console.log(queryObj);
-    return this.query;
+    return this;
   }
 }
 

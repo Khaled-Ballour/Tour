@@ -3,8 +3,8 @@ const FeatureAPI = require('../utils/FeatureAPI');
 
 exports.getAllTours = async (req, res, next) => {
   const featureAPI = new FeatureAPI(Tour.find(), req.query);
-  const query = featureAPI.flitter();
-  const tours = await query;
+  featureAPI.flitter();
+  const tours = await featureAPI.query;
   res.json({ status: 'success', size: tours.length, tours });
 };
 
