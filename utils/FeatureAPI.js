@@ -18,7 +18,24 @@ class FeatureAPI {
 
   sort() {
     const queryObj = JSON.parse(this.queryString);
-    if (queryObj.sort) this.query.sort(queryObj.sort);
+    const sortBy = queryObj.sort?.split(',').join(' ');
+    if (sortBy) this.query.sort(sortBy);
+    return this;
+  }
+
+  select() {
+    const queryObj = JSON.parse(this.queryString);
+    const fields = queryObj.fields?.split(',').join(' ');
+    if (fields) this.query.select(fields);
+    return this;
+  }
+
+  pagination() {
+    const queryObj = JSON.parse(this.queryString);
+    const page = +queryObj.page || 1;
+    const limit = +queryObj.limit || 10;
+    const skip = (page - 1) * limit;
+    this.query.skip(skip).limit(limit);
     return this;
   }
 }
