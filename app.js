@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const AppError = require('./utils/AppErrors');
+const errorHandler = require('./utils/controllers/errorController');
 const tourRouter = require('./routers/tourRouter');
 const userRouter = require('./routers/userRouter');
 
@@ -11,12 +13,8 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.all('*', (req, res, next) => {
-  res
-    .status(404)
-    .json({
-      status: 'fail',
-      message: `The route ${req.originalUrl} is not found`,
-    });
+  next(new AppError(`The route ${req.originalUrl} is not found`, 404));
 });
+app.use(errorHandler);
 
 module.exports = app;
