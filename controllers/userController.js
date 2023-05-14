@@ -1,11 +1,15 @@
-exports.getAllUsers = (req, res, next) => {
-  res.json({ status: 200, data: 'Users' });
-};
+const User = require('../Models/userModel');
+const catchAsync = require('../utils/catchAsync');
 
-exports.createUser = (req, res, next) => {};
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find();
+  res.json({ status: 200, users });
+});
 
-exports.updateUser = (req, res, next) => {};
+exports.createUser = catchAsync(async (req, res, next) => {});
 
-exports.deleteUser = (req, res, next) => {};
+exports.updateUser = catchAsync(async (req, res, next) => {});
 
-exports.getUser = (req, res, next) => {};
+exports.deleteUser = catchAsync((req, res, next) => {});
+
+exports.getUser = catchAsync((req, res, next) => {});
