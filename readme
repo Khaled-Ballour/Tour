@@ -3,8 +3,13 @@ Login process:
 2- check if user exist and password is correct
 3- if everything is ok, send a token to the client
 
-Protecting process
+Protecting process:
 1- get the token and check if its exist
 2- verify the token
 3- check if the user still exist
 4- check if user changed the password after the JWT was issued
+
+Forget password process:
+1- get user based on POSTed email
+2- generate the random reset token
+3- send the token to user's email

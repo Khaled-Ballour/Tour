@@ -60,7 +60,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError('the Password is changed'), 401);
   }
   req.user = freshUser;
-  console.log(freshUser);
   next();
 });
 
@@ -70,3 +69,13 @@ exports.restrictTo = (...roles) => {
     return next(new AppError('You do not have this privilege', 403));
   };
 };
+
+exports.forgetPassword = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user)
+    return next(new AppError('There is no user with email address', 404));
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {});
