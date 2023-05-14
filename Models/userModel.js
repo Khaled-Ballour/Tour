@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Provide a password'],
     minlength: 8,
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -30,6 +31,11 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords are not the same',
     },
   },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -38,6 +44,14 @@ userSchema.pre('save', async function (next) {
   this.passwordConfirm = undefined;
   next();
 });
+
+userSchema.methods.correctPassword = async function (
+  inputPassword,
+  userPassword
+) {
+  // we passed the user password just because this.password will return undefined because of the select:false
+  return await bcrypt.compare(inputPassword, userPassword);
+};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

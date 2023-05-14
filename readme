@@ -1,0 +1,4 @@
+Login process:
+1- check if the email and password are correct
+2- check if user exist and password is correct
+3- if everything is ok, send a token to the client
