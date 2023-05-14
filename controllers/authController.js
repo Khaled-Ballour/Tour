@@ -1,3 +1,4 @@
+const { promisify } = require('util');
 const User = require('../Models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppErrors');
@@ -37,4 +38,18 @@ exports.login = catchAsync(async (req, res, next) => {
     status: 'success',
     token,
   });
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+  if (!token) return next(new AppError('Login to get access.', 401));
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  console.log(decoded);
+  next();
 });

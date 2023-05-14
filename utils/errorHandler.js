@@ -39,6 +39,12 @@ const handleValidationError = (err) => {
   return new AppError(message, 400);
 };
 
+const handleJWTError = () =>
+  new AppError('Invalid token, Login to access', 401);
+
+const handleExpireToken = () =>
+  new AppError('Your token has been expired, Login to access', 401);
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
@@ -50,6 +56,8 @@ module.exports = (err, req, res, next) => {
     if (err.name === 'CastError') error = handleCastErrorDB(error);
     if (err.code === 11000) error = handleDuplicateError(error);
     if (err.name === 'ValidationError') error = handleValidationError(error);
+    if (err.name === 'JsonWebTokenError') error = handleJWTError(error);
+    if (err.name === 'TokenExpiredError') error = handleExpireToken(error);
     sendErrorProd(error, res);
   }
 };
