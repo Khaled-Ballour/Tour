@@ -36,11 +36,13 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
+  passwordChangedAt: String,
 });
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
+  this.passwordChangedAt = Date.now() - 1000;
   this.passwordConfirm = undefined;
   next();
 });
@@ -51,6 +53,12 @@ userSchema.methods.correctPassword = async function (
 ) {
   // we passed the user password just because this.password will return undefined because of the select:false
   return await bcrypt.compare(inputPassword, userPassword);
+};
+
+userSchema.methods.changePasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt)
+    return JWTTimestamp * 1000 < +this.passwordChangedAt;
+  return false;
 };
 
 const User = mongoose.model('User', userSchema);
