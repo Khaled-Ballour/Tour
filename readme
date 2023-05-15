@@ -13,3 +13,9 @@ Forget password process:
 1- get user based on POSTed email
 2- generate the random reset token
 3- send the token to user's email
+
+Send emails process:
+1- create a transporter
+2- defined the email's options
+3- actual send the email
+4- if the mail fail to send the we need to delete the reset token from the database
