@@ -8,7 +8,7 @@ const sendEmail = require('../utils/email');
 
 const signToken = (payload) => {
   return jwt.sign({ id: payload }, process.env.JWT_SECRET, {
-    expiresIn: process.env.jWT_EXPIRES_IN,
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
@@ -16,6 +16,15 @@ const createSendToken = (user, statusCode, res) => {
   user.password = undefined;
   user.passwordChangedAt = undefined;
   const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    // secure: true, //the cookie will only send on https
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'development') cookieOptions.secure = true;
+  res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
     status: 'success',
     token,
