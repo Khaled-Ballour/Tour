@@ -31,3 +31,7 @@ Update current user password process:
 2- check the posted current password is correct
 3- if so, update the password
 4 log the user in by sending the token to him
+
+update user's profile:
+1- return an error if the user tried to update the password
+2-update the user document
