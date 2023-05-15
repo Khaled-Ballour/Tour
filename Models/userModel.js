@@ -37,6 +37,11 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin', 'guide', 'lead-guide'],
     default: 'user',
   },
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
   passwordChangedAt: Number,
   passwordResetToken: String,
   passwordResetExpires: Number,
@@ -52,6 +57,11 @@ userSchema.pre('save', async function (next) {
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password') || this.isNew) return next();
   this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
   next();
 });
 
