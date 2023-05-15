@@ -25,3 +25,9 @@ Reset password process:
 2- if the token has not expired and there is a user, set the new password
 3- update changedPasswordAt property for the user
 4- log the user in by sending the token to him
+
+Update current user password process:
+1- get the user from the database
+2- check the posted current password is correct
+3- if so, update the password
+4 log the user in by sending the token to him
