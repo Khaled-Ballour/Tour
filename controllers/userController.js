@@ -11,18 +11,17 @@ const filterObj = (body, ...fields) => {
   return filteredObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-  res.json({ status: 200, size: users.length, users });
+exports.createUser = catchAsync(async (req, res, next) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'this route is not defined, use signup instead',
+  });
 });
 
-exports.createUser = catchAsync(async (req, res, next) => {});
-
-exports.updateUser = catchAsync(async (req, res, next) => {});
-
+exports.getAllUsers = handlerFactory.getAll(User);
+exports.updateUser = handlerFactory.updateOne(User);
 exports.deleteUser = handlerFactory.deleteOne(User);
-
-exports.getUser = catchAsync(async (req, res, next) => {});
+exports.getUser = handlerFactory.getOne(User);
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
