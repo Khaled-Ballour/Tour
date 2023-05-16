@@ -4,9 +4,7 @@ const fs = require('fs');
 const Tour = require('../../Models/tourModel');
 const DB_connection = require('../../utils/DB-connection');
 
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
-);
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 const importData = async () => {
   try {
